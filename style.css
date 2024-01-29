@@ -1,0 +1,49 @@
+.container{
+    margin: 40px;
+    font-family:sans-serif;
+}
+
+#export-btn{
+    background-color: green;
+    color: #fff;
+    border: none;
+    margin-bottom: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+#export-btn:hover{
+    background-color: darkgreen;
+    transition: 0.2s;
+}
+
+.cell-row{
+    display: flex;
+}
+
+.cell{
+    width: 80px;
+    height: 40px;
+    outline: none;
+    border: 1px solid #555;
+    box-sizing: border-box;
+}
+
+.cell:focus{
+    background-color: #ddd;
+}
+
+.cell.header{
+    background-color: #ddd;
+    text-align: center;
+}
+
+.cell.header.active{
+    background-color: dodgerblue;
+    color: #fff;
+}
+
+.cell:focus{
+    border: 3px solid dodgerblue;
+}
+
