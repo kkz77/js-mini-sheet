@@ -1,5 +1,8 @@
 const spreadsheetContainer = document.querySelector('#spread-sheet-container')
 const exportBtn = document.querySelector("#export-btn")
+const cellStatus = document.querySelector("#cell-status")
+const formula = document.querySelector("#input-formula")
+const inputSubmit = document.querySelector("#input-submit")
 const row = 6
 const column = 6
 const spreadsheet = []
@@ -15,6 +18,7 @@ class Cell {
         this.active = active
     }
 }
+
 initSpreadSheet()
 function initSpreadSheet() {
     for (let i = 0; i < row; i++) {
@@ -87,9 +91,19 @@ function createCellEl(cell) {
     cellEl.id = "cell_" + cell.row + cell.column
     cellEl.value = cell.data
     cellEl.disabled = cell.disabled
-    if (cell.isHeader == true) {
+    if (cell.isHeader) {
         cellEl.classList.add("header")
     }
+
+    if ((cell.row == 0 && cell.column == 1) || (cell.row == 1 && cell.column == 0)) {
+        cellEl.classList.add("active")
+    }
+
+    if (cell.row == 1 && cell.column == 1) {
+        cellEl.classList.add("cell-active")
+        cellEl.focus()
+    }
+    cellStatus.innerHTML = "A1"
     cellEl.onclick = () => handleClick(cell)
     cellEl.onchange = (e) => handleChange(e.target.value, cell)
     return cellEl
@@ -109,6 +123,7 @@ function handleClick(cell) {
     const rowHeaderEl = getElfromRowCol(rowHeader.row, rowHeader.column)
     columnHeaderEl.classList.add("active")
     rowHeaderEl.classList.add("active")
+    cellStatus.innerHTML = cell.columnName + "" + cell.rowName
 }
 
 function handleChange(value, cell) {
@@ -119,9 +134,13 @@ function clearHeaderActive() {
     for (let i = 0; i < spreadsheet.length; i++) {
         for (let j = 0; j < spreadsheet.length; j++) {
             const cell = spreadsheet[i][j]
+            let cellEl = getElfromRowCol(cell.row, cell.column)
             if (cell.isHeader) {
-                let cellEl = getElfromRowCol(cell.row, cell.column)
                 cellEl.classList.remove("active")
+            }
+
+            if (cell.row == 1 && cell.column == 1) {
+                cellEl.classList.remove("cell-active")
             }
         }
     }
@@ -129,4 +148,25 @@ function clearHeaderActive() {
 
 function getElfromRowCol(row, col) {
     return document.querySelector("#cell_" + row + col)
+}
+
+inputSubmit.onclick = function () {
+    handleValue(formula.value)
+}
+
+function handleValue(value) {
+    const operators = ['+', '-', '*', '/']
+    const paren = ['(', ')']
+    const tokens = parseStringToArray(value)
+    let total = 0
+    let temp = []
+    for (let i = 0; i < spreadsheet.length; i++) {
+        for (let j = 0; j < spreadsheet[i].length; j++) {
+        }
+    }
+}
+
+function parseStringToArray(expression) {
+    const tokens = expression.match(/([A-Za-z0-9]+|[+\-*\/=()])/g) || [];
+    return tokens
 }

@@ -3,6 +3,16 @@
     font-family:sans-serif;
 }
 
+.title{
+    color: #555;
+    font-size: 20px;
+    padding-bottom: 10px;
+}
+
+.formula{
+    padding: 10px 0;
+}
+
 #export-btn{
     background-color: green;
     color: #fff;
@@ -43,7 +53,9 @@
     color: #fff;
 }
 
-.cell:focus{
+.cell-active,.cell:focus{
     border: 3px solid dodgerblue;
 }
+
+
 
