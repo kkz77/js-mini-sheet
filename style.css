@@ -3,6 +3,13 @@
     font-family:sans-serif;
 }
 
+#error-message{
+    color: #F74F4F;
+    font-size: 13px;
+    padding: 5px 0 10px 65px;
+    visibility: hidden;
+}
+
 .title{
     color: #555;
     font-size: 20px;

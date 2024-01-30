@@ -3,9 +3,11 @@ const exportBtn = document.querySelector("#export-btn")
 const cellStatus = document.querySelector("#cell-status")
 const formula = document.querySelector("#input-formula")
 const inputSubmit = document.querySelector("#input-submit")
+const error = document.querySelector("#error-message")
 const row = 6
 const column = 6
 const spreadsheet = []
+const operation = ['SUM', 'AVERAGE', 'MIN', 'MAX'];
 class Cell {
     constructor(isHeader, disabled, data, row, rowName, column, columnName, active = false) {
         this.isHeader = isHeader
@@ -108,8 +110,15 @@ function createCellEl(cell) {
     cellEl.onchange = (e) => handleChange(e.target.value, cell)
     inputSubmit.onclick = function () {
         const cell = changeValueToRowColl(cellStatus.innerHTML)
-        const value = handleValue(formula.value)
-        cell.value = value
+        const formulaData = formula.value
+        if (operation.some(item => formulaData.includes(item))) {
+            const value = handleArrayFormula(formulaData)
+            cell.value = value
+        }
+        else {
+            const value = handleValue(formulaData)
+            cell.value = value
+        }
     }
     return cellEl
 }
@@ -151,8 +160,6 @@ function clearHeaderActive() {
     }
 }
 
-
-
 function changeValueToRowColl(value) {
     const items = value.split('')
     const column = items[0].charCodeAt(0) - 64
@@ -172,6 +179,43 @@ function handleValue(value) {
         let data = val.join('')
         return eval(data)
     }
+    else {
+        console.log('Start with "=" to use formula')
+    }
+}
+
+function handleArrayFormula(value) {
+    const tokens = parseStringToArray2(value)
+    const newValue = replaceValue(tokens)
+    let total = 0
+    let var1 = parseFloat(newValue[2])
+    let var2 = parseFloat(newValue[3])
+    if (newValue[1] == "SUM") {
+        total = var1 + var2
+    }
+    else if (newValue[1]== "AVERAGE"){
+        total = (var1 + var2)/2
+    }
+    else if (newValue[1]=="MAX"){
+        if (var1 >= var2){
+            total = var1
+        }
+        if (var1 < var2){
+            total = var2
+        }
+    }
+    else if (newValue[1]=="MIN"){
+        if (var1 >= var2){
+            total = var2
+        }
+        if (var1 < var2){
+            total = var1
+        }
+    }
+    else {
+        console.log('Start with "=" to use formula')
+    }
+    return total
 }
 
 function replaceValue(values) {
@@ -185,4 +229,17 @@ function replaceValue(values) {
 function parseStringToArray(expression) {
     const tokens = expression.match(/([A-Za-z0-9]+|[+\-*\/=()])/g) || [];
     return tokens
+}
+
+function parseStringToArray2(expression) {
+    const regex = /^=([A-Z]+)\(([\w\d]+):([\w\d]+)\)$/;
+    const match = expression.match(regex);
+
+    if (match) {
+        const components = match.slice(1);
+        return ['='].concat(components);
+
+    } else {
+        console.log('Invalid input format');
+    }
 }
