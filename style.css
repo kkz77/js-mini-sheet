@@ -3,6 +3,30 @@
     font-family:sans-serif;
 }
 
+.bold-text{
+    font-weight: bold;
+}
+
+.italic-text{
+    font-style: italic;
+}
+
+.bar{
+    border: 1px solid #555;
+    display: inline-block;
+    padding: 10px;
+    background-color: #ddd;
+}
+
+.bar button{
+    border: none;
+    background-color: #ddd;
+    color: #555;
+    padding: 0 10px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 #error-message{
     color: #F74F4F;
     font-size: 13px;
@@ -39,11 +63,13 @@
 }
 
 .cell{
+    font-size: 15px;
     width: 80px;
     height: 40px;
     outline: none;
     border: 1px solid #555;
     box-sizing: border-box;
+    background-color: #fff;
 }
 
 .cell:focus{

@@ -4,6 +4,10 @@ const cellStatus = document.querySelector("#cell-status")
 const formula = document.querySelector("#input-formula")
 const inputSubmit = document.querySelector("#input-submit")
 const error = document.querySelector("#error-message")
+const fillColor = document.querySelector("#fill-color")
+const textColor = document.querySelector("#text-color")
+const bold = document.querySelector("#bold")
+const italic = document.querySelector("#italic")
 const row = 6
 const column = 6
 const spreadsheet = []
@@ -23,6 +27,7 @@ class Cell {
 
 initSpreadSheet()
 function initSpreadSheet() {
+    fillColor.value = "#DDDDDD"
     for (let i = 0; i < row; i++) {
         let spreadsheetRow = []
         for (let j = 0; j < column; j++) {
@@ -46,7 +51,6 @@ function initSpreadSheet() {
 
             if (cell_data <= 0) {
                 cell_data = ""
-
             }
             rowName = i
 
@@ -138,6 +142,12 @@ function handleClick(cell) {
     columnHeaderEl.classList.add("active")
     rowHeaderEl.classList.add("active")
     cellStatus.innerHTML = cell.columnName + "" + cell.rowName
+    const currentCell = changeValueToRowColl(cellStatus.innerHTML)
+    const currentColor = window.getComputedStyle(currentCell)
+    const bgColor = currentColor.backgroundColor.match(/\d+/g)
+    const color = currentColor.color.match(/\d+/g)
+    fillColor.value = rgbToHex(bgColor)
+    textColor.value = rgbToHex(color)
 }
 
 function handleChange(value, cell) {
@@ -193,22 +203,22 @@ function handleArrayFormula(value) {
     if (newValue[1] == "SUM") {
         total = var1 + var2
     }
-    else if (newValue[1]== "AVERAGE"){
-        total = (var1 + var2)/2
+    else if (newValue[1] == "AVERAGE") {
+        total = (var1 + var2) / 2
     }
-    else if (newValue[1]=="MAX"){
-        if (var1 >= var2){
+    else if (newValue[1] == "MAX") {
+        if (var1 >= var2) {
             total = var1
         }
-        if (var1 < var2){
+        if (var1 < var2) {
             total = var2
         }
     }
-    else if (newValue[1]=="MIN"){
-        if (var1 >= var2){
+    else if (newValue[1] == "MIN") {
+        if (var1 >= var2) {
             total = var2
         }
-        if (var1 < var2){
+        if (var1 < var2) {
             total = var1
         }
     }
@@ -242,4 +252,34 @@ function parseStringToArray2(expression) {
     } else {
         console.log('Invalid input format');
     }
+}
+
+bold.onclick = function () {
+    const cell = changeValueToRowColl(cellStatus.innerHTML)
+    return cell.classList.contains('bold-text') ? cell.classList.remove('bold-text') : cell.classList.add('bold-text')
+}
+
+italic.onclick = function () {
+    const cell = changeValueToRowColl(cellStatus.innerHTML)
+    return cell.classList.contains('italic-text') ? cell.classList.remove('italic-text') : cell.classList.add('italic-text')
+}
+
+fillColor.onchange = function () {
+    const cell = changeValueToRowColl(cellStatus.innerHTML)
+    cell.style.backgroundColor = fillColor.value
+}
+
+textColor.onchange = function () {
+    const cell = changeValueToRowColl(cellStatus.innerHTML)
+    cell.style.color = textColor.value
+}
+
+function rgbToHex(match) {
+    var r = parseInt(match[0]);
+    var g = parseInt(match[1]);
+    var b = parseInt(match[2]);
+    r = Math.min(255, Math.max(0, r));
+    g = Math.min(255, Math.max(0, g));
+    b = Math.min(255, Math.max(0, b));
+    return `#${(1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1).toUpperCase()}`;
 }
