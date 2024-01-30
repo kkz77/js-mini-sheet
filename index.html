@@ -13,20 +13,26 @@
     <div class="container">       
         <div class="title">Mini Sheet</div>
         <div class="bar">
-            Format
-            <input id="fill-color" type="color" name="fill-color" >
-            <input id="text-color" type="color" name="text-color" >
-            <button id="bold" >Bold</button>
-            <button id="italic">Italic</button>
+            <div class="fill-color">
+                <label for="fill-color"><img src="./assets/fill-color.png" alt="fill-color"></label>
+                <input id="fill-color" type="color" name="fill-color">
+            </div>
+            <div class="text-color">
+                <label for="text-color"><img src="./assets/font.png" alt="font"></label>
+                <input id="text-color" type="color" name="text-color" >
+            </div>
+            <button id="bold" ><img src="./assets/bold.png" alt="bold"></button>
+            <button id="italic"><img src="./assets/italic-font.png" alt="italic"></button>
+            <div id="reset">Reset</div>
         </div>
         <div class="formula">
-            Cell : <span id="cell-status"></span>
+            <div class="text">Cell : <span id="cell-status"></span></div>
             <input id="input-formula" type="text">
-            <input id="input-submit" type="submit" value="Submit">
-            <div id="error-message">This is error</div>
+            <input id="input-submit" type="submit" value="Calculate">
         </div>
-        <button id="export-btn">Export Spreadsheet</button>
+        <div id="error-message">This is error</div>
         <div id="spread-sheet-container"></div>
+        <button id="export-btn">Export Spreadsheet</button>
     </div>
 </body>
 <script src="script.js"></script>

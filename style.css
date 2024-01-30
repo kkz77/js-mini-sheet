@@ -1,10 +1,36 @@
 .container{
-    margin: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 722px;
+    margin: 40px auto;
     font-family:sans-serif;
+}
+
+img{
+    width: 25px;
+}
+
+.fill-color, .text-color{
+    display: flex;
+    align-items: center;
+}
+
+#fill-color, #text-color{
+    margin-left: 5px;
+    width: 25px;
 }
 
 .bold-text{
     font-weight: bold;
+}
+
+.formula .text{
+    padding: 5px 5px;
+    font-size: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
 
 .italic-text{
@@ -12,10 +38,14 @@
 }
 
 .bar{
-    border: 1px solid #555;
-    display: inline-block;
+    width: 700px;
+    border: 1px solid #fff;
+    border-radius: 5px;
     padding: 10px;
     background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .bar button{
@@ -29,26 +59,45 @@
 
 #error-message{
     color: #F74F4F;
-    font-size: 13px;
-    padding: 5px 0 10px 65px;
-    visibility: hidden;
+    font-size: 18px;
+    padding:5px 0 20px 0;
 }
 
 .title{
     color: #555;
-    font-size: 20px;
-    padding-bottom: 10px;
+    font-size: 35px;
+    padding-bottom: 30px;
 }
 
 .formula{
-    padding: 10px 0;
+    padding: 20px 0 0 0;
+    width: 722px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#input-formula {
+    height: 25px;
+    flex-grow: 1;
+    border: 1px solid #757575;
+    border-radius: 5px;
+    margin: 0 0 0 10px;
+}
+
+#input-submit{
+    font-size: 15px;
+    height: 32px;
+    border: none;
 }
 
 #export-btn{
+    font-size: 18px;
     background-color: green;
     color: #fff;
-    border: none;
-    margin-bottom: 5px;
+    border: 1px solid green;
+    border-radius: 5px;
+    margin-top: 25px;
     padding: 10px 15px;
     cursor: pointer;
 }
@@ -63,9 +112,9 @@
 }
 
 .cell{
-    font-size: 15px;
-    width: 80px;
-    height: 40px;
+    font-size: 20px;
+    width: 120px;
+    height: 60px;
     outline: none;
     border: 1px solid #555;
     box-sizing: border-box;

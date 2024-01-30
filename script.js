@@ -8,6 +8,7 @@ const fillColor = document.querySelector("#fill-color")
 const textColor = document.querySelector("#text-color")
 const bold = document.querySelector("#bold")
 const italic = document.querySelector("#italic")
+const reset = document.querySelector("#reset")
 const row = 6
 const column = 6
 const spreadsheet = []
@@ -113,15 +114,18 @@ function createCellEl(cell) {
     cellEl.onclick = () => handleClick(cell)
     cellEl.onchange = (e) => handleChange(e.target.value, cell)
     inputSubmit.onclick = function () {
+        
         const cell = changeValueToRowColl(cellStatus.innerHTML)
         const formulaData = formula.value
         if (operation.some(item => formulaData.includes(item))) {
             const value = handleArrayFormula(formulaData)
             cell.value = value
+            formula.value = ""
         }
         else {
             const value = handleValue(formulaData)
             cell.value = value
+            formula.value = ""
         }
     }
     return cellEl
@@ -272,6 +276,12 @@ fillColor.onchange = function () {
 textColor.onchange = function () {
     const cell = changeValueToRowColl(cellStatus.innerHTML)
     cell.style.color = textColor.value
+}
+
+reset.onclick = function(){
+    const cell = changeValueToRowColl(cellStatus.innerHTML)
+    cell.style.color = "#000"
+    cell.style.backgroundColor= "#fff"
 }
 
 function rgbToHex(match) {
