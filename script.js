@@ -106,6 +106,11 @@ function createCellEl(cell) {
     cellStatus.innerHTML = "A1"
     cellEl.onclick = () => handleClick(cell)
     cellEl.onchange = (e) => handleChange(e.target.value, cell)
+    inputSubmit.onclick = function () {
+        const cell = changeValueToRowColl(cellStatus.innerHTML)
+        const value = handleValue(formula.value)
+        cell.value = value
+    }
     return cellEl
 }
 
@@ -146,24 +151,35 @@ function clearHeaderActive() {
     }
 }
 
+
+
+function changeValueToRowColl(value) {
+    const items = value.split('')
+    const column = items[0].charCodeAt(0) - 64
+    const row = items[1]
+    return getElfromRowCol(row, column)
+}
+
 function getElfromRowCol(row, col) {
     return document.querySelector("#cell_" + row + col)
 }
 
-inputSubmit.onclick = function () {
-    handleValue(formula.value)
+function handleValue(value) {
+    const tokens = parseStringToArray(value)
+    const newValue = replaceValue(tokens)
+    if (newValue[0] == "=") {
+        let val = newValue.filter((item) => item !== '=')
+        let data = val.join('')
+        return eval(data)
+    }
 }
 
-function handleValue(value) {
-    const operators = ['+', '-', '*', '/']
-    const paren = ['(', ')']
-    const tokens = parseStringToArray(value)
-    let total = 0
-    let temp = []
-    for (let i = 0; i < spreadsheet.length; i++) {
-        for (let j = 0; j < spreadsheet[i].length; j++) {
-        }
-    }
+function replaceValue(values) {
+    const regex = /^[A-Z]\d+$/;
+    const replacedValues = values.map(item => {
+        return regex.test(item) ? changeValueToRowColl(item).value : item;
+    });
+    return replacedValues
 }
 
 function parseStringToArray(expression) {
