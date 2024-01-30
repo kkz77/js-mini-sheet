@@ -3,7 +3,7 @@ const exportBtn = document.querySelector("#export-btn")
 const cellStatus = document.querySelector("#cell-status")
 const formula = document.querySelector("#input-formula")
 const inputSubmit = document.querySelector("#input-submit")
-const error = document.querySelector("#error-message")
+const errorMessage = document.querySelector("#error-message")
 const fillColor = document.querySelector("#fill-color")
 const textColor = document.querySelector("#text-color")
 const bold = document.querySelector("#bold")
@@ -114,17 +114,38 @@ function createCellEl(cell) {
     cellEl.onclick = () => handleClick(cell)
     cellEl.onchange = (e) => handleChange(e.target.value, cell)
     inputSubmit.onclick = function () {
-        
         const cell = changeValueToRowColl(cellStatus.innerHTML)
         const formulaData = formula.value
-        if (operation.some(item => formulaData.includes(item))) {
+        if (formulaData == "") {
+            errorMessage.style.visibility = 'visible';
+            errorMessage.innerHTML = "Please type correct formula to calculate"
+            setTimeout(function () {
+                errorMessage.style.visibility = "hidden"
+            }, 3000);
+        }
+        else if (!formulaData.startsWith("=")) {
+            const cell = changeValueToRowColl(cellStatus.innerHTML)
+            cell.value = formula.value
+            formula.value = ""
+        }
+        else if (operation.some(item => formulaData.includes(item))) {
             const value = handleArrayFormula(formulaData)
-            cell.value = value
+            if(value === undefined){
+                cell.value = ""
+            }
+            else{
+                cell.value = value
+            }
             formula.value = ""
         }
         else {
             const value = handleValue(formulaData)
-            cell.value = value
+            if(value === undefined){
+                cell.value = ""
+            }
+            else{
+                cell.value = value
+            }
             formula.value = ""
         }
     }
@@ -188,14 +209,20 @@ function getElfromRowCol(row, col) {
 function handleValue(value) {
     const tokens = parseStringToArray(value)
     const newValue = replaceValue(tokens)
-    if (newValue[0] == "=") {
-        let val = newValue.filter((item) => item !== '=')
-        let data = val.join('')
-        return eval(data)
+    try {
+        if (newValue[0] == "=") {
+            let val = newValue.filter((item) => item !== '=')
+            let data = val.join('')
+            return eval(data)
+        }
+    } catch (error) {
+        errorMessage.style.visibility = "visible"
+        errorMessage.innerHTML = "Invalid formula format!!!"
+        setTimeout(function () {
+            errorMessage.style.visibility = "hidden"
+        }, 3000);
     }
-    else {
-        console.log('Start with "=" to use formula')
-    }
+
 }
 
 function handleArrayFormula(value) {
@@ -234,10 +261,19 @@ function handleArrayFormula(value) {
 
 function replaceValue(values) {
     const regex = /^[A-Z]\d+$/;
-    const replacedValues = values.map(item => {
-        return regex.test(item) ? changeValueToRowColl(item).value : item;
-    });
-    return replacedValues
+    try {
+        const replacedValues = values.map(item => {
+            return regex.test(item) ? changeValueToRowColl(item).value : item;
+        });
+        return replacedValues
+    } catch (error) {
+        errorMessage.style.visibility = "visible"
+        errorMessage.innerHTML = "Invalid input format"
+        setTimeout(function () {
+            errorMessage.style.visibility = "hidden"
+        }, 3000);
+    }
+
 }
 
 function parseStringToArray(expression) {
@@ -248,14 +284,20 @@ function parseStringToArray(expression) {
 function parseStringToArray2(expression) {
     const regex = /^=([A-Z]+)\(([\w\d]+):([\w\d]+)\)$/;
     const match = expression.match(regex);
-
-    if (match) {
-        const components = match.slice(1);
-        return ['='].concat(components);
-
-    } else {
-        console.log('Invalid input format');
+    try {
+        if (match) {
+            const components = match.slice(1);
+            return ['='].concat(components);
+        }
     }
+    catch (error) {
+        errorMessage.style.visibility = "visible"
+        errorMessage.innerHTML = "Invalid input format"
+        setTimeout(function () {
+            errorMessage.style.visibility = "hidden"
+        }, 3000);
+    }
+
 }
 
 bold.onclick = function () {
@@ -278,10 +320,10 @@ textColor.onchange = function () {
     cell.style.color = textColor.value
 }
 
-reset.onclick = function(){
+reset.onclick = function () {
     const cell = changeValueToRowColl(cellStatus.innerHTML)
     cell.style.color = "#000"
-    cell.style.backgroundColor= "#fff"
+    cell.style.backgroundColor = "#fff"
 }
 
 function rgbToHex(match) {
