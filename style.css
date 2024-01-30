@@ -33,6 +33,11 @@ img{
     border-radius: 5px;
 }
 
+#input-formula{
+    font-size: 20px;
+}
+
+
 .italic-text{
     font-style: italic;
 }
@@ -61,6 +66,7 @@ img{
     color: #F74F4F;
     font-size: 18px;
     padding:5px 0 20px 0;
+    visibility:hidden;
 }
 
 .title{
@@ -78,7 +84,7 @@ img{
 }
 
 #input-formula {
-    height: 25px;
+    height: 28px;
     flex-grow: 1;
     border: 1px solid #757575;
     border-radius: 5px;
@@ -87,8 +93,15 @@ img{
 
 #input-submit{
     font-size: 15px;
-    height: 32px;
-    border: none;
+    height: 35px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#input-submit:hover{
+    background-color: #ddd;
+    transition: 0.3s;
 }
 
 #export-btn{
